@@ -27,9 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dataPanel.addEventListener("click", (event) => {
         if (event.target.matches(".btn-show-movie")) {
             showMovie(event.target.dataset.id);
-        } else if (event.target.matches(".btn-add-favorite")) {
-            console.log(event.target.dataset.id);
-            addFavoriteItem(event.target.dataset.id);
         }
     });
 
@@ -68,6 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    listModel.addEventListener("click", event => {
+        if (event.target.matches("#btn-listModel")) {
+            displayDataListModel(data);
+        }
+    });
+
     function getPageData(pageNum, data) {
         paginationData = data || paginationData;
         let offset = (pageNum - 1) * ITEM_PER_PAGE;
@@ -78,7 +81,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayDataList(data) {
         let htmlContent = "";
         data.forEach(function (item, index) {
-            console.log(item);
+            var url = item.url;
+            // Obtener el número del episodio de la URL
+            var episodeNumber = url.split('/').filter(function (el) {
+                return el !== '';
+            }).pop();
             htmlContent += `
         <div class="col-sm-3">
           <div class="card mb-2">
@@ -87,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <h6 class="card-title">${item.title}</h5>
             </div>
             <div class="card-footer">
-              <button class="btn btn-primary btn-show-movie" data-toggle="modal" data-target="#show-movie-modal" data-id="${index + 1}">Mostrar más</button>
+              <button class="btn btn-primary btn-show-movie" data-toggle="modal" data-target="#show-movie-modal" data-id="${episodeNumber}">Mostrar más</button>
              </div>
           </div>
         </div>
